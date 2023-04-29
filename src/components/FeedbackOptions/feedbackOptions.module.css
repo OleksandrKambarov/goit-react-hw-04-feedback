@@ -1,0 +1,13 @@
+.button {
+  font-size: 20px;
+  width: 100px;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 10px;
+}
+.button:not(:last-child) {
+  margin-right: 20px;
+}
+.button:hover {
+  background-color: rgb(153, 241, 208);
+}
