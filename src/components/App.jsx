@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Statistics from './Statistics';
 import Notification from './Notification';
 import FeedbackOptions from './FeedbackOptions';
@@ -9,33 +9,41 @@ function App() {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
-  const handlerBTn = ({ target: { textContent } }) => {
-    this.setState({
-      [textContent]: this.state[textContent] + 1,
-    });
+  const handlerBTn = textContent => {
+    switch (textContent) {
+      case 'good':
+        setGood(prevGood => prevGood + 1);
+        break;
+      case 'neutral':
+        setNeutral(prevNeutral => prevNeutral + 1);
+        break;
+      case 'bad':
+        setBad(prevBad => prevBad + 1);
+        break;
+      default:
+        return;
+    }
   };
 
   const countTotalFeedback = () => {
-    const total = Object.values({ ...this.state }).reduce((acc, value) => {
-      acc += value;
-      return acc;
-    }, 0);
-    return total;
+    return good + neutral + bad;
   };
 
   const countPositiveFeedbackPercentage = () => {
-    return Math.round((this.state.good * 100) / this.countTotalFeedback());
+    return Math.round((good / countTotalFeedback()) * 100) || 0;
   };
 
-  const buttons = Object.keys({ ...this.state });
   return (
     <>
       <Section title="Please leave feedback">
-        <FeedbackOptions options={buttons} onLeaveFeedback={this.handlerBTn} />
+        <FeedbackOptions
+          options={['good', 'neutral', 'bad']}
+          onLeaveFeedback={handlerBTn}
+        />
       </Section>
 
       <Section title="Statistics">
-        {this.countTotalFeedback() > 0 ? (
+        {countTotalFeedback() > 0 ? (
           <Statistics
             good={good}
             neutral={neutral}
